@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
+import { LedgerClockProvider } from "@/hooks/useLedger";
 import { sortForDisplay } from "@/lib/subscription";
 import { CommittedSpend } from "@/components/subscription/CommittedSpend";
 import { SubscriptionCard } from "@/components/subscription/SubscriptionCard";
@@ -21,7 +22,13 @@ export default function MySubscriptionsPage() {
         </p>
       </header>
 
-      <RequireWallet purpose="see your subscriptions">{(address) => <Subscriptions address={address} />}</RequireWallet>
+      <RequireWallet purpose="see your subscriptions">
+        {(address) => (
+          <LedgerClockProvider>
+            <Subscriptions address={address} />
+          </LedgerClockProvider>
+        )}
+      </RequireWallet>
     </div>
   );
 }
