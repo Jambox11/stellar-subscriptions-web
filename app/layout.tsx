@@ -17,8 +17,11 @@ export const viewport: Viewport = {
   colorScheme: "dark light",
 };
 
-/** Applies a saved light-theme choice before first paint, so dark never flashes. */
-const THEME_SCRIPT = `try{if(localStorage.getItem("subs.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}`;
+/**
+ * Applies the saved theme choice before first paint, so dark never flashes.
+ * Dark stays the default for new visitors; "system" follows prefers-color-scheme.
+ */
+const THEME_SCRIPT = `try{var t=localStorage.getItem("subs.theme");var d=t==="light"?false:t==="system"?!(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches):true;if(d)document.documentElement.classList.add("dark");else document.documentElement.classList.remove("dark")}catch(e){}`;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
